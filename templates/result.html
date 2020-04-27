@@ -1,0 +1,442 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link href="../static/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <title>Shenhao's Search Engine</title>
+    <style>
+        .s003 {
+            -ms-flex-align: normal;
+            align-items: normal;
+            font-family: 'Poppins', sans-serif;
+            min-height: auto;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 33% 33% 33%;
+            background-color: #6475c0;
+            ;
+            padding: 10px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            margin: 10px;
+            font-size: 16px;
+            /* text-align: center; */
+        }
+
+        .results {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #95a6f0;
+        }
+
+        img.artist,
+        img.album {
+            position: absolute;
+            display: inline-block;
+            width: 60px;
+            margin-right: 10px;
+            top: 0px;
+            left: -3px;
+            height: 60px;
+        }
+
+        img.track {
+            display: inline-block;
+            width: 60px;
+            left: 0px;
+            margin-right: 10px;
+
+        }
+
+        .main-info {
+            position: absolute;
+            font-size: 16px;
+            top: 7px;
+            left: 70px;
+            color: rgb(0, 0, 61);
+            /* vertical-align: top; */
+        }
+
+        .second-info {
+            position: absolute;
+            font-size: 10px;
+            bottom: 10px;
+            left: 70px;
+            color: rgb(112, 112, 112);
+        }
+
+        ul {
+            list-style-type: none;
+            list-style-position: inside;
+            padding: 5px;
+
+        }
+
+        li.out {
+            height: 60px;
+            /* width:80%; */
+            position: relative;
+            /* padding-right: 10px; */
+            background-color: rgba(95, 158, 160, 0.418);
+            margin: 5px;
+            margin-bottom: 10px;
+        }
+
+        .main-info a {
+            font-size: 16px;
+            color: rgb(0, 0, 61);
+        }
+
+        .track-info {
+            font-size: 10px;
+            bottom: 10px;
+            left: 70px;
+            color: rgb(112, 112, 112);
+        }
+
+        a.container {
+            display: inline-block;
+            position: relative;
+            width: 100%;
+            top: -20px;
+            height: 60px;
+
+        }
+
+
+        .detail-info {
+            position: absolute;
+            font-size: 10px;
+            bottom: 18px;
+            right: 50px;
+            color: rgb(40, 17, 168);
+        }
+
+        .search-info {
+            position: absolute;
+            font-size: 10px;
+            bottom: 18px;
+            right: 10px;
+            color: rgb(40, 17, 168);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="s003">
+        <form id="searchbar" action="/result" method="POST">
+            <div class="inner-form">
+                <div class="input-field first-wrap">
+                    <div class="input-select">
+                        <select id="scope" data-trigger="" name="choices-single-defaul" onchange=placeholder()>
+                            <option  value="tracks, albums, artists">Tracks, Albums, Artists</option>
+                            <option  value="tracks">Tracks</option>
+                            <option value="albums">Albums</option>
+                            <option value="artists">Artists</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-field second-wrap">
+                    <input id="search" name="query" type="text" placeholder="Search for tracks, albums, artists:" />
+                </div>
+                <div class="input-field third-wrap">
+                    <button class="btn-search" type="button" onclick=submit()>
+                        <svg class="svg-inline--fa fa-search fa-w-16" aria-hidden="true" data-prefix="fas"
+                            data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path fill="currentColor"
+                                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h2>
+        Search result for {{query}}
+    </h2>
+    <h1 class="option" style="display:none;">{{option}}</h1>
+
+    <div class="grid-container results">
+        <div class="grid-item">
+            <h2>Tracks</h2>
+            <ul class="results">
+                {% for t in track_results %}
+                <li style="white-space: pre-line" class="out"><a href={{t[1]}} target="_blank"><img
+                            style="width:40px; position:absolute; top:10px; left: 10px;" class="track"
+                            src="../static/images/play.png" alt=""></a><span class="main-info"><a href={{t[1]}}
+                            target="_blank">{{t[0]}}</a></span><br>
+                    <span class="second-info">by {{t[2]}}</span>
+                    <span class="detail-info track"><a name={{t[4]}} data-trackname={{t[0]}} href="#commentModal"
+                            data-toggle="modal"><img src="../static/images/comments.png" alt=""
+                                style="width:28px;"></a></span>
+                    <span class="search-info"><a href={{t[3]}}><img src="../static/images/search.png" alt=""
+                                style="width:22px;"></a></span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="grid-item">
+            <h2>Albums</h2>
+            <ul class="results">
+                {% for album in album_results %}
+                <li style="white-space: pre-line" class="out">
+
+                    <img class="album" src={{album[1]}} alt="No Image"><span class="main-info">{{album[0]}}</span>
+                    <span class="second-info">by {{album[2]}}</span>
+
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+        <div class="grid-item">
+
+            <h2>Artists</h2>
+            <ul class="results">
+                {% for a in artist_results[:10] %}
+                <li style="white-space: pre-line" class="out">
+                    <!-- <a id={{a[3]}} class="container" href="#artistModal"  data-toggle="modal"> -->
+                    <img class="artist" src={{a[1]}} alt="No Image"><span class="main-info">{{a[0]}}</span> <span
+                        class="second-info">{{a[2]}} followers</span>
+                    <span class="detail-info detail"><a id={{a[3]}} href="#artistModal" data-toggle="modal"><img
+                                src="../static/images/info.png" alt="" style="width:8px;"></a></span>
+                    <span class="search-info"><a href={{a[4]}}><img src="../static/images/search.png" alt=""
+                                style="width:22px;"></a></span>
+                    <!-- </a> -->
+                </li>
+
+
+
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="artistModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Artist Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="display: inline-block; width:49%;">
+
+                        <img src="" alt="No artist img" style="width:70%; height:auto;">
+                        <h1 style="font-size: 36px;">Artist Name</h1>
+                        <h3 class="genre" style="font-size: 14px; "></h3>
+                        <h3 class="follower" style="font-size: 14px; color:rgb(105, 105, 105)">Followers: </h3>
+                    </div>
+                    <div style="display: inline-block; width:49%; vertical-align: top;">
+                        <p class="Top-Tracks" style="font-size: 20px; ">Top Tracks</p>
+                        <ul class="Top-Tracks">
+                        </ul>
+                        <p style="font-size: 10px; color:rgb(105, 105, 105)">Database will expand as you search. Search
+                            to get more results.</p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Comments</h4>
+                </div>
+                <div class="modal-body">
+                    <ul style="list-style: circle outside; white-space: pre-line; vertical-align: top;">
+
+                    </ul>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        style="border-color:darkcyan;background-color:darkcyan; color:cornsilk">I'm listening
+                        too.</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script src="../static/js/extention/choices.js"></script>
+    <script>
+        const choices = new Choices('[data-trigger]',
+            {
+                searchEnabled: false,
+                itemSelectText: '',
+            });
+
+    </script>
+    <script>
+        function placeholder() {
+            var x = document.getElementById("scope").value;
+            console.log(x)
+            document.getElementById("search").placeholder = "Search for " + x + ":";
+        }
+        function submit() {
+            document.getElementById("searchbar").submit()
+        }
+
+        $(".detail a").click(function () {
+            $("#artistModal .modal-body ul.top-tracks ").html("")
+            x = $(this).attr("id")
+            console.log(x)
+            $.ajax({
+                url: '/artist',
+                data: { artistid: x },
+                type: 'POST',
+                success: function (response) {
+                    console.log(response);
+                    var artist = JSON.parse(response).artist[0]
+                    var track = JSON.parse(response).tracks
+                    var name = artist[1]
+                    var genre = artist[3]
+                    var fans = artist[2]
+                    var img = artist[4]
+                    $("#artistModal .modal-body h1").html(name)
+                    $("#artistModal .modal-body img").attr("src", img)
+                    $("#artistModal .modal-body h3.genre").html(genre)
+                    $("#artistModal .modal-body h3.follower").html(fans + " followers")
+
+                    for (let index = 0; index < track.length; index++) {
+                        const x = track[index];
+                        $("#artistModal .modal-body ul.top-tracks ").append("<li>" + x[0] + "</li>")
+
+
+                    }
+
+                    // $("#artistModal .modal-body ul.top-tracks li").eq(0).html(track[0][0])
+
+                    // var name=obj.name
+                    // create popup here
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        })
+
+
+        $(".track a").click(function () {
+            $("#commentModal .modal-body ul").html("")
+            x = $(this).attr("name")
+            console.log(x)
+            trackname = $(this).data("trackname")
+            $.ajax({
+                url: '/comment',
+                data: { name: x },
+                type: 'POST',
+                success: function (response) {
+                    // console.log(response);
+
+                    var comments = JSON.parse(response)
+                    $("#commentModal .modal-header h4").html("Comments of " + trackname)
+                    for (let index = 0; index < comments.length; index++) {
+                        const text = comments[index];
+                        $("#commentModal .modal-body ul").append("<li>" + text + "</li>")
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        })
+        
+        $(document).ready(function () {
+            var option = $(".option").html()
+            var c = $("ul.results")
+            console.log(option)
+            if (option=="tracks"){
+
+                c.eq(1).css("visibility", "hidden")
+                c.eq(2).css("visibility", "hidden")
+            }
+            if (option=="albums"){
+                c.eq(0).css("visibility", "hidden")
+                    c.eq(2).css("visibility", "hidden")
+            }
+            if (option=="artists"){
+                c.eq(0).css("visibility", "hidden")
+                    c.eq(1).css("visibility", "hidden")
+            }
+            
+            // switch (option) {
+            //     case "Tracks":
+            //         console.log(option)
+            //         c.eq(1).css("visibility", "hidden")
+            //         c.eq(2).css("visibility", "hidden")
+            //         c.eq(2).css("visibility", "hidden")
+            //         // c.eq(0).css("display", "initial")
+            //     case "Albums":
+            //         console.log(option)
+            //         c.eq(0).css("visibility", "hidden")
+            //         c.eq(2).css("visibility", "hidden")
+            //     // case "Artists":
+            //     //     console.log(option)
+            //     //     c.eq(2).css("display", "initial")
+            //     //     c.eq(0).css("display", "none")
+            //     //     c.eq(1).css("display", "none")
+            // }
+        })
+    </script>
+
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
